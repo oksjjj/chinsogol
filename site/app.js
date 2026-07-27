@@ -103,42 +103,59 @@ function renderLineChart(container, chartData) {
     return;
   }
 
-  const width = 720;
-  const height = 280;
-  const padding = { top: 36, right: 28, bottom: 60, left: 28 };
+  const count = chartData.length;
+  const pointGap = count >= 20 ? 72 : count >= 12 ? 64 : 56;
+  const width = Math.max(720, (count - 1) * pointGap + 120);
+  const height = 320;
+  const padding = { top: 40, right: 36, bottom: 92, left: 36 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = chartData.map((item) => item.total);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
   const range = Math.max(maxValue - minValue, 1);
+  const labelStep = Math.max(1, Math.ceil(count / 10));
 
   const points = chartData.map((item, index) => {
     const x =
-      chartData.length === 1
+      count === 1
         ? padding.left + plotWidth / 2
-        : padding.left + (plotWidth * index) / (chartData.length - 1);
+        : padding.left + (plotWidth * index) / (count - 1);
     const normalized = (item.total - minValue) / range;
     const y = padding.top + plotHeight - normalized * plotHeight;
-    return { ...item, x, y };
+    const showLabel =
+      count <= 8 ||
+      index === 0 ||
+      index === count - 1 ||
+      index % labelStep === 0;
+    return { ...item, x, y, showLabel };
   });
 
   const polylinePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
   const ticks = [0, 0.5, 1].map((ratio) => {
-    const value = Math.round(maxValue - ratio * range);
     const y = padding.top + plotHeight * ratio;
-    return { value, y };
+    return { y };
   });
 
   const labels = points
-    .map(
-      (point) => `
+    .map((point) => {
+      const axisLabel = point.showLabel
+        ? `<text
+            x="${point.x}"
+            y="${height - 18}"
+            text-anchor="end"
+            transform="rotate(-40 ${point.x} ${height - 18})"
+            class="line-chart-label"
+          >${point.contest}</text>`
+        : "";
+
+      return `
         <g class="chart-point-group">
           <circle cx="${point.x}" cy="${point.y}" r="6" class="line-chart-point"></circle>
           <text x="${point.x}" y="${point.y - 14}" text-anchor="middle" class="line-chart-value">${point.total}</text>
-          <text x="${point.x}" y="${height - 18}" text-anchor="middle" class="line-chart-label">${point.contest}</text>
-        </g>`,
-    )
+          ${axisLabel}
+        </g>`;
+    })
     .join("");
 
   const grid = ticks
@@ -158,11 +175,19 @@ function renderLineChart(container, chartData) {
 
   container.innerHTML = `
     <div class="line-chart-card">
-      <svg viewBox="0 0 ${width} ${height}" class="line-chart" role="img" aria-label="대회별 스트로크 추이 그래프">
-        ${grid}
-        <polyline points="${polylinePoints}" class="line-chart-path"></polyline>
-        ${labels}
-      </svg>
+      <div class="line-chart-scroll">
+        <svg
+          viewBox="0 0 ${width} ${height}"
+          width="${width}"
+          class="line-chart"
+          role="img"
+          aria-label="대회별 스트로크 추이 그래프"
+        >
+          ${grid}
+          <polyline points="${polylinePoints}" class="line-chart-path"></polyline>
+          ${labels}
+        </svg>
+      </div>
     </div>
   `;
 }
@@ -200,22 +225,43 @@ async function renderHome() {
 async function renderContest() {
   const rows = await loadRows();
   const contests = sortContestsLatestFirst(rows.map((r) => r.contest));
+  const browse = document.querySelector("#contestBrowse");
+  const detail = document.querySelector("#contestDetail");
+  const list = document.querySelector("#contestList");
+  const search = document.querySelector("#contestSearch");
   const select = document.querySelector("#contestSelect");
   const body = document.querySelector("#contestTableBody");
   const title = document.querySelector("#contestTitle");
   const courseInfo = document.querySelector("#contestCourse");
   const queryContest = getParam("contest");
+  const selectedContest =
+    queryContest && contests.includes(queryContest) ? queryContest : "";
+
+  if (!selectedContest) {
+    browse.hidden = false;
+    detail.hidden = true;
+    const drawList = () => {
+      makeLinkList(
+        list,
+        filterContains(contests, search.value),
+        "contest",
+        "contest.html",
+      );
+    };
+    search.addEventListener("input", drawList);
+    drawList();
+    return;
+  }
+
+  browse.hidden = true;
+  detail.hidden = false;
 
   for (const c of contests) {
     const option = document.createElement("option");
     option.value = c;
     option.textContent = c;
-    if (queryContest && c === queryContest) option.selected = true;
+    if (c === selectedContest) option.selected = true;
     select.appendChild(option);
-  }
-
-  if (!select.value && contests.length > 0) {
-    select.value = contests[0];
   }
 
   const draw = () => {
@@ -261,22 +307,42 @@ async function renderContest() {
 async function renderPerson() {
   const rows = await loadRows();
   const names = uniqueSorted(rows.map((r) => r.name));
+  const browse = document.querySelector("#personBrowse");
+  const detail = document.querySelector("#personDetail");
+  const list = document.querySelector("#personList");
+  const search = document.querySelector("#personSearch");
   const select = document.querySelector("#personSelect");
   const body = document.querySelector("#personTableBody");
   const title = document.querySelector("#personTitle");
   const chart = document.querySelector("#personContestChart");
   const queryName = getParam("name");
+  const selectedName = queryName && names.includes(queryName) ? queryName : "";
+
+  if (!selectedName) {
+    browse.hidden = false;
+    detail.hidden = true;
+    const drawList = () => {
+      makeLinkList(
+        list,
+        filterContains(names, search.value),
+        "name",
+        "person.html",
+      );
+    };
+    search.addEventListener("input", drawList);
+    drawList();
+    return;
+  }
+
+  browse.hidden = true;
+  detail.hidden = false;
 
   for (const n of names) {
     const option = document.createElement("option");
     option.value = n;
     option.textContent = n;
-    if (queryName && n === queryName) option.selected = true;
+    if (n === selectedName) option.selected = true;
     select.appendChild(option);
-  }
-
-  if (!select.value && names.length > 0) {
-    select.value = names[0];
   }
 
   const draw = () => {

@@ -34,29 +34,40 @@
         <a class="tab-link active" href="person.html">개인별</a>
       </nav>
 
-      <section class="panel">
-        <label for="personSelect">이름 선택</label>
-        <select id="personSelect"></select>
+      <section id="personBrowse" class="panel list-panel">
+        <h2>개인 목록</h2>
+        <input id="personSearch" class="search" placeholder="이름 검색 (예: 김성진)" />
+        <ul id="personList" class="link-list"></ul>
       </section>
 
-      <section class="panel">
-        <h2 id="personTitle">대회별 차트</h2>
-        <div id="personContestChart"></div>
-      </section>
+      <div id="personDetail" hidden>
+        <section class="panel">
+          <div class="detail-toolbar">
+            <a class="text-link" href="person.html">← 전체 목록</a>
+          </div>
+          <label for="personSelect">이름 선택</label>
+          <select id="personSelect"></select>
+        </section>
 
-      <section class="panel">
-        <h2>세부 스코어</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>대회</th>
-              <th>코스</th>
-              <th class="score-col">스트로크</th>
-            </tr>
-          </thead>
-          <tbody id="personTableBody"></tbody>
-        </table>
-      </section>
+        <section class="panel">
+          <h2 id="personTitle">대회별 차트</h2>
+          <div id="personContestChart"></div>
+        </section>
+
+        <section class="panel">
+          <h2>세부 스코어</h2>
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>대회</th>
+                <th>코스</th>
+                <th class="score-col">스코어</th>
+              </tr>
+            </thead>
+            <tbody id="personTableBody"></tbody>
+          </table>
+        </section>
+      </div>
 
       <footer class="site-footer">
         <a
@@ -72,4 +83,4 @@
 
     <script type="module" src="app.js?v=__BUILD_VERSION__"></script>
   </body>
-  </html>
+</html>

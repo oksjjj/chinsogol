@@ -123,6 +123,23 @@ h1 {
   gap: 18px;
 }
 
+.detail-toolbar {
+  margin-bottom: 10px;
+}
+
+.text-link,
+.text-link:link,
+.text-link:visited,
+.text-link:active {
+  color: #1f5f46;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.text-link:hover {
+  color: #154433;
+}
+
 .panel {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(20, 43, 34, 0.08);
@@ -173,33 +190,44 @@ select:focus {
   margin: 6px 0;
 }
 
-.link-list a {
+.link-list a,
+.link-list a:link,
+.link-list a:visited,
+.link-list a:active {
   text-decoration: none;
   color: #1f5f46;
   font-weight: 600;
 }
 
-.link-list a:visited {
-  color: #1f5f46;
-}
-
-.tab-link:visited {
+.tab-link:link,
+.tab-link:visited,
+.tab-link:active {
   color: #eff7f2;
 }
 
-.tab-link.active:visited {
+.tab-link.active:link,
+.tab-link.active:visited,
+.tab-link.active:active {
   color: #163427;
 }
 
-.footer-link:visited {
+.footer-link:link,
+.footer-link:visited,
+.footer-link:active {
   color: #154433;
 }
 
-table a:visited {
+table a,
+table a:link,
+table a:visited,
+table a:active {
   color: #1f5f46;
+  text-decoration: none;
+  font-weight: 600;
 }
 
-.link-list a:hover {
+.link-list a:hover,
+table a:hover {
   color: #154433;
 }
 
@@ -209,6 +237,34 @@ table {
   margin-top: 10px;
   border-radius: 10px;
   overflow: hidden;
+}
+
+.score-table {
+  width: auto;
+  min-width: 280px;
+  max-width: 100%;
+  table-layout: auto;
+}
+
+.score-table th,
+.score-table td {
+  padding: 10px 18px 10px 8px;
+}
+
+.score-table th:first-child,
+.score-table td:first-child,
+.score-table .score-col {
+  white-space: nowrap;
+}
+
+.score-table th:first-child,
+.score-table td:first-child {
+  padding-left: 0;
+}
+
+.score-table th:last-child,
+.score-table td:last-child {
+  padding-right: 0;
 }
 
 thead th {
@@ -243,10 +299,16 @@ tbody tr:hover {
   border: 1px solid #dfe7e2;
 }
 
-.line-chart {
+.line-chart-scroll {
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.line-chart {
   height: auto;
   display: block;
+  min-width: 100%;
 }
 
 .line-chart-grid {
@@ -255,9 +317,9 @@ tbody tr:hover {
 }
 
 .line-chart-label {
-  fill: #355446;
-  font-size: 13px;
-  font-weight: 600;
+  fill: #234034;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .line-chart-value {
@@ -331,7 +393,7 @@ tbody tr:hover {
   }
 
   .line-chart-label {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   .line-chart-value {

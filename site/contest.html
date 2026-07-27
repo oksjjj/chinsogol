@@ -34,25 +34,36 @@
         <a class="tab-link" href="person.html">개인별</a>
       </nav>
 
-      <section class="panel">
-        <label for="contestSelect">대회 선택</label>
-        <select id="contestSelect"></select>
+      <section id="contestBrowse" class="panel list-panel">
+        <h2>대회 목록</h2>
+        <input id="contestSearch" class="search" placeholder="대회명 검색 (예: 26년7월)" />
+        <ul id="contestList" class="link-list"></ul>
       </section>
 
-      <section class="panel">
-        <h2 id="contestTitle">스코어</h2>
-        <p id="contestCourse" class="muted"></p>
-        <table>
-          <thead>
-            <tr>
-              <th>순위</th>
-              <th>이름</th>
-              <th class="score-col">총 스트로크</th>
-            </tr>
-          </thead>
-          <tbody id="contestTableBody"></tbody>
-        </table>
-      </section>
+      <div id="contestDetail" hidden>
+        <section class="panel">
+          <div class="detail-toolbar">
+            <a class="text-link" href="contest.html">← 전체 목록</a>
+          </div>
+          <label for="contestSelect">대회 선택</label>
+          <select id="contestSelect"></select>
+        </section>
+
+        <section class="panel">
+          <h2 id="contestTitle">스코어</h2>
+          <p id="contestCourse" class="muted"></p>
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>이름</th>
+                <th class="score-col">스코어</th>
+              </tr>
+            </thead>
+            <tbody id="contestTableBody"></tbody>
+          </table>
+        </section>
+      </div>
 
       <footer class="site-footer">
         <a
@@ -68,4 +79,4 @@
 
     <script type="module" src="app.js?v=__BUILD_VERSION__"></script>
   </body>
-  </html>
+</html>
