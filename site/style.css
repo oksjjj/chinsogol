@@ -308,13 +308,13 @@ tbody tr:hover {
 
 .line-chart-label {
   fill: #234034;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .line-chart-value {
   fill: #163427;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -382,11 +382,8 @@ tbody tr:hover {
     grid-template-columns: 1fr;
   }
 
-  .line-chart-label {
-    font-size: 17px;
-  }
-
+  .line-chart-label,
   .line-chart-value {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
