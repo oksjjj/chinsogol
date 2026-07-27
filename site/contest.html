@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대회별 스코어 조회</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="contest">
+    <main class="container">
+      <a class="back-link" href="index.html">← 홈으로</a>
+      <h1>대회별 스코어 조회</h1>
+
+      <section class="panel">
+        <label for="contestSelect">대회 선택</label>
+        <select id="contestSelect"></select>
+      </section>
+
+      <section class="panel">
+        <h2 id="contestTitle">스코어</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>순위</th>
+              <th>이름</th>
+              <th>총 스트로크</th>
+              <th>상세(코스)</th>
+            </tr>
+          </thead>
+          <tbody id="contestTableBody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+  </html>

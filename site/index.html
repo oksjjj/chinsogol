@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>친소골 스코어 보드</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="home">
+    <main class="container">
+      <h1>친소골 스코어 보드</h1>
+      <p class="subtitle">대회별/개인별로 스코어를 빠르게 조회하세요.</p>
+
+      <section class="panel">
+        <h2>대회별 조회</h2>
+        <input id="contestSearch" class="search" placeholder="대회명 검색 (예: 26년7월)" />
+        <ul id="contestList" class="link-list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>개인별 조회</h2>
+        <input id="personSearch" class="search" placeholder="이름 검색 (예: 김성진)" />
+        <ul id="personList" class="link-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+  </html>
