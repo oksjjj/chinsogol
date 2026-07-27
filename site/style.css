@@ -163,6 +163,12 @@ select:focus {
   margin: 12px 0 0;
 }
 
+.list-panel .link-list {
+  max-height: 640px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
 .link-list li {
   margin: 6px 0;
 }
@@ -171,6 +177,26 @@ select:focus {
   text-decoration: none;
   color: #1f5f46;
   font-weight: 600;
+}
+
+.link-list a:visited {
+  color: #1f5f46;
+}
+
+.tab-link:visited {
+  color: #eff7f2;
+}
+
+.tab-link.active:visited {
+  color: #163427;
+}
+
+.footer-link:visited {
+  color: #154433;
+}
+
+table a:visited {
+  color: #1f5f46;
 }
 
 .link-list a:hover {
@@ -228,10 +254,22 @@ tbody tr:hover {
   stroke-width: 1;
 }
 
-.line-chart-label,
-.line-chart-value {
+.line-chart-label {
   fill: #355446;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.line-chart-value {
+  fill: #163427;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.score-col {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
 }
 
 .line-chart-path {
@@ -292,8 +330,11 @@ tbody tr:hover {
     grid-template-columns: 1fr;
   }
 
-  .line-chart-label,
+  .line-chart-label {
+    font-size: 15px;
+  }
+
   .line-chart-value {
-    font-size: 11px;
+    font-size: 20px;
   }
 }

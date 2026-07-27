@@ -58,6 +58,21 @@ function uniqueSorted(list) {
   return Array.from(new Set(list)).sort((a, b) => a.localeCompare(b, "ko"));
 }
 
+function parseContestValue(contest) {
+  const match = contest.match(/(\d+)년\s*(\d+)월/);
+  if (!match) return Number.NEGATIVE_INFINITY;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  return year * 100 + month;
+}
+
+function sortContestsLatestFirst(list) {
+  return Array.from(new Set(list)).sort((a, b) => {
+    const diff = parseContestValue(b) - parseContestValue(a);
+    return diff !== 0 ? diff : b.localeCompare(a, "ko");
+  });
+}
+
 function getParam(name) {
   return new URLSearchParams(window.location.search).get(name) || "";
 }
@@ -89,8 +104,8 @@ function renderLineChart(container, chartData) {
   }
 
   const width = 720;
-  const height = 260;
-  const padding = { top: 20, right: 24, bottom: 56, left: 48 };
+  const height = 280;
+  const padding = { top: 36, right: 28, bottom: 60, left: 28 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = chartData.map((item) => item.total);
@@ -119,9 +134,9 @@ function renderLineChart(container, chartData) {
     .map(
       (point) => `
         <g class="chart-point-group">
-          <circle cx="${point.x}" cy="${point.y}" r="5" class="line-chart-point"></circle>
-          <text x="${point.x}" y="${point.y - 12}" text-anchor="middle" class="line-chart-value">${point.total}</text>
-          <text x="${point.x}" y="${height - 20}" text-anchor="middle" class="line-chart-label">${point.contest}</text>
+          <circle cx="${point.x}" cy="${point.y}" r="6" class="line-chart-point"></circle>
+          <text x="${point.x}" y="${point.y - 14}" text-anchor="middle" class="line-chart-value">${point.total}</text>
+          <text x="${point.x}" y="${height - 18}" text-anchor="middle" class="line-chart-label">${point.contest}</text>
         </g>`,
     )
     .join("");
@@ -154,7 +169,7 @@ function renderLineChart(container, chartData) {
 
 async function renderHome() {
   const rows = await loadRows();
-  const contests = uniqueSorted(rows.map((r) => r.contest));
+  const contests = sortContestsLatestFirst(rows.map((r) => r.contest));
   const names = uniqueSorted(rows.map((r) => r.name));
 
   const contestSearch = document.querySelector("#contestSearch");
@@ -184,7 +199,7 @@ async function renderHome() {
 
 async function renderContest() {
   const rows = await loadRows();
-  const contests = uniqueSorted(rows.map((r) => r.contest));
+  const contests = sortContestsLatestFirst(rows.map((r) => r.contest));
   const select = document.querySelector("#contestSelect");
   const body = document.querySelector("#contestTableBody");
   const title = document.querySelector("#contestTitle");
@@ -229,7 +244,7 @@ async function renderContest() {
       tr.innerHTML = `
         <td>${index + 1}</td>
         <td><a href="person.html?name=${encodeURIComponent(item.name)}">${item.name}</a></td>
-        <td>${item.total}</td>
+        <td class="score-col">${item.total}</td>
       `;
       body.appendChild(tr);
     });
@@ -270,7 +285,7 @@ async function renderPerson() {
 
     const target = rows
       .filter((r) => r.name === name)
-      .sort((a, b) => a.contest.localeCompare(b.contest, "ko"));
+      .sort((a, b) => parseContestValue(b.contest) - parseContestValue(a.contest));
 
     const contestTotals = new Map();
     for (const item of target) {
@@ -280,7 +295,7 @@ async function renderPerson() {
 
     const chartData = Array.from(contestTotals.entries())
       .map(([contest, total]) => ({ contest, total }))
-      .sort((a, b) => a.contest.localeCompare(b.contest, "ko"));
+      .sort((a, b) => parseContestValue(b.contest) - parseContestValue(a.contest));
     renderLineChart(chart, chartData);
 
     body.innerHTML = "";
@@ -289,7 +304,7 @@ async function renderPerson() {
       tr.innerHTML = `
         <td><a href="contest.html?contest=${encodeURIComponent(item.contest)}">${item.contest}</a></td>
         <td>${item.course}</td>
-        <td>${item.stroke}</td>
+        <td class="score-col">${item.stroke}</td>
       `;
       body.appendChild(tr);
     }
