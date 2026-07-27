@@ -8,8 +8,13 @@
   </head>
   <body data-page="home">
     <main class="container">
-      <h1>친소골 스코어 보드</h1>
-      <p class="subtitle">대회별/개인별로 스코어를 빠르게 조회하세요.</p>
+      <header class="site-header">
+        <div class="logo-mark" aria-hidden="true">친쏘골</div>
+        <div>
+          <h1>친쏘골 스코어 보드</h1>
+          <p class="subtitle">대회별/개인별 스코어를 한눈에 확인하세요.</p>
+        </div>
+      </header>
 
       <section class="panel">
         <h2>대회별 조회</h2>
@@ -22,6 +27,17 @@
         <input id="personSearch" class="search" placeholder="이름 검색 (예: 김성진)" />
         <ul id="personList" class="link-list"></ul>
       </section>
+
+      <footer class="site-footer">
+        <a
+          class="footer-link"
+          href="https://app.notion.com/p/31b148cd77bb80068014fed30d5d1f27?pvs=11"
+          target="_blank"
+          rel="noreferrer"
+        >
+          친쏘골 노션 바로가기
+        </a>
+      </footer>
     </main>
 
     <script type="module" src="app.js"></script>

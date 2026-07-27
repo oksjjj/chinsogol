@@ -104,6 +104,7 @@ async function renderContest() {
   const select = document.querySelector("#contestSelect");
   const body = document.querySelector("#contestTableBody");
   const title = document.querySelector("#contestTitle");
+  const courseInfo = document.querySelector("#contestCourse");
   const queryContest = getParam("contest");
 
   for (const c of contests) {
@@ -122,6 +123,8 @@ async function renderContest() {
     const contest = select.value;
     title.textContent = `${contest} 스코어`;
     const target = rows.filter((r) => r.contest === contest);
+    const course = target[0]?.course || "-";
+    courseInfo.textContent = `코스: ${course}`;
 
     const byName = new Map();
     for (const row of target) {
@@ -133,7 +136,6 @@ async function renderContest() {
       .map(([name, items]) => ({
         name,
         total: items.reduce((sum, item) => sum + item.stroke, 0),
-        details: items.map((item) => `${item.course} (${item.stroke})`).join(", "),
       }))
       .sort((a, b) => a.total - b.total);
 
@@ -144,7 +146,6 @@ async function renderContest() {
         <td>${index + 1}</td>
         <td><a href="person.html?name=${encodeURIComponent(item.name)}">${item.name}</a></td>
         <td>${item.total}</td>
-        <td class="muted">${item.details}</td>
       `;
       body.appendChild(tr);
     });
@@ -164,6 +165,7 @@ async function renderPerson() {
   const select = document.querySelector("#personSelect");
   const body = document.querySelector("#personTableBody");
   const title = document.querySelector("#personTitle");
+  const chart = document.querySelector("#personContestChart");
   const queryName = getParam("name");
 
   for (const n of names) {
@@ -180,11 +182,38 @@ async function renderPerson() {
 
   const draw = () => {
     const name = select.value;
-    title.textContent = `${name} 스코어`;
+    title.textContent = `${name} 대회별 차트`;
 
     const target = rows
       .filter((r) => r.name === name)
       .sort((a, b) => a.contest.localeCompare(b.contest, "ko"));
+
+    const contestTotals = new Map();
+    for (const item of target) {
+      const prev = contestTotals.get(item.contest) || 0;
+      contestTotals.set(item.contest, prev + item.stroke);
+    }
+
+    const chartData = Array.from(contestTotals.entries())
+      .map(([contest, total]) => ({ contest, total }))
+      .sort((a, b) => a.contest.localeCompare(b.contest, "ko"));
+    const maxValue = Math.max(...chartData.map((d) => d.total), 1);
+
+    chart.innerHTML = "";
+    const list = document.createElement("div");
+    list.className = "chart-list";
+    for (const item of chartData) {
+      const row = document.createElement("div");
+      row.className = "chart-row";
+      const width = Math.max((item.total / maxValue) * 100, 2);
+      row.innerHTML = `
+        <span class="chart-label">${item.contest}</span>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:${width}%"></div></div>
+        <span class="chart-value">${item.total}</span>
+      `;
+      list.appendChild(row);
+    }
+    chart.appendChild(list);
 
     body.innerHTML = "";
     for (const item of target) {

@@ -4,42 +4,95 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #f6f8fb;
-  color: #111827;
+  font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #1f5138 0, transparent 28%),
+    radial-gradient(circle at 90% 0%, #8f7c3e 0, transparent 24%),
+    linear-gradient(180deg, #0d1f18 0%, #142b22 26%, #eff3f1 26%, #eff3f1 100%);
+  color: #15231c;
 }
 
 .container {
-  max-width: 960px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 24px 16px 40px;
+  padding: 28px 16px 48px;
+}
+
+.site-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #f9faf9;
+}
+
+.site-header.compact {
+  margin-bottom: 16px;
+}
+
+.logo-mark {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 2px solid rgba(235, 207, 131, 0.85);
+  background: linear-gradient(145deg, #1e4936, #193929);
+  color: #f3e5b4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 h1 {
   margin: 0 0 8px;
+  font-size: 29px;
+  letter-spacing: -0.3px;
 }
 
 .subtitle {
   margin: 0 0 20px;
-  color: #4b5563;
+  color: rgba(246, 248, 247, 0.9);
+}
+
+.site-header.compact .subtitle {
+  margin-bottom: 0;
 }
 
 .panel {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(20, 43, 34, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 28px rgba(10, 25, 20, 0.08);
+  backdrop-filter: blur(4px);
+}
+
+h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #153126;
 }
 
 .search,
 select {
   width: 100%;
-  margin-top: 8px;
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  margin-top: 10px;
+  padding: 11px 12px;
+  border: 1px solid #d6ddd9;
+  border-radius: 10px;
   font-size: 14px;
+  background: #fff;
+}
+
+.search:focus,
+select:focus {
+  outline: none;
+  border-color: #2d6a4f;
+  box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
 }
 
 .link-list {
@@ -54,36 +107,121 @@ select {
 
 .link-list a {
   text-decoration: none;
-  color: #2563eb;
+  color: #1f5f46;
+  font-weight: 600;
 }
 
 .link-list a:hover {
-  text-decoration: underline;
+  color: #154433;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
+  margin-top: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead th {
+  background: #f2f6f4;
+  color: #244437;
+  font-weight: 700;
 }
 
 th,
 td {
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e8edeb;
   padding: 10px 8px;
   font-size: 14px;
   vertical-align: top;
 }
 
+tbody tr:hover {
+  background: #f8fbf9;
+}
+
 .back-link {
   display: inline-block;
-  margin-bottom: 10px;
-  color: #2563eb;
+  margin-bottom: 12px;
+  color: #c5dfd3;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .muted {
-  color: #6b7280;
+  color: #617368;
   font-size: 13px;
+}
+
+.chart-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 48px;
+  gap: 10px;
+  align-items: center;
+}
+
+.chart-label,
+.chart-value {
+  font-size: 13px;
+  color: #234034;
+}
+
+.chart-bar-wrap {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: #dde5e1;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2d6a4f, #5d8b4c);
+}
+
+.site-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #154433;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(10, 25, 20, 0.08);
+  border: 1px solid rgba(20, 43, 34, 0.08);
+}
+
+.footer-link:hover {
+  background: #ffffff;
+  color: #0f3326;
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    align-items: flex-start;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .chart-row {
+    grid-template-columns: 90px 1fr 44px;
+  }
 }

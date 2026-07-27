@@ -9,7 +9,13 @@
   <body data-page="person">
     <main class="container">
       <a class="back-link" href="index.html">← 홈으로</a>
-      <h1>개인별 스코어 조회</h1>
+      <header class="site-header compact">
+        <div class="logo-mark" aria-hidden="true">친쏘골</div>
+        <div>
+          <h1>개인별 스코어 조회</h1>
+          <p class="subtitle">개인 기록 추이와 세부 스코어를 확인하세요.</p>
+        </div>
+      </header>
 
       <section class="panel">
         <label for="personSelect">이름 선택</label>
@@ -17,7 +23,12 @@
       </section>
 
       <section class="panel">
-        <h2 id="personTitle">스코어</h2>
+        <h2 id="personTitle">대회별 차트</h2>
+        <div id="personContestChart"></div>
+      </section>
+
+      <section class="panel">
+        <h2>세부 스코어</h2>
         <table>
           <thead>
             <tr>
@@ -29,6 +40,17 @@
           <tbody id="personTableBody"></tbody>
         </table>
       </section>
+
+      <footer class="site-footer">
+        <a
+          class="footer-link"
+          href="https://app.notion.com/p/31b148cd77bb80068014fed30d5d1f27?pvs=11"
+          target="_blank"
+          rel="noreferrer"
+        >
+          친쏘골 노션 바로가기
+        </a>
+      </footer>
     </main>
 
     <script type="module" src="app.js"></script>
