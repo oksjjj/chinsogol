@@ -89,12 +89,6 @@ function makeLinkList(element, values, urlKey, pagePath) {
   }
 }
 
-function filterContains(values, keyword) {
-  const q = keyword.trim().toLowerCase();
-  if (!q) return values;
-  return values.filter((value) => value.toLowerCase().includes(q));
-}
-
 function renderLineChart(container, chartData) {
   container.innerHTML = "";
 
@@ -108,7 +102,7 @@ function renderLineChart(container, chartData) {
   const pointGap = count >= 20 ? 64 : 56;
   const width = needsScroll ? Math.max(720, (count - 1) * pointGap + 100) : 720;
   const height = 360;
-  const padding = { top: 40, right: 32, bottom: 118, left: 32 };
+  const padding = { top: 40, right: 64, bottom: 118, left: 64 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = chartData.map((item) => item.total);
@@ -129,7 +123,15 @@ function renderLineChart(container, chartData) {
       index === 0 ||
       index === count - 1 ||
       index % labelStep === 0;
-    return { ...item, x, y, showLabel };
+    const labelAnchor =
+      count === 1
+        ? "middle"
+        : index === 0
+          ? "start"
+          : index === count - 1
+            ? "end"
+            : "middle";
+    return { ...item, x, y, showLabel, labelAnchor };
   });
 
   const polylinePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
@@ -145,14 +147,14 @@ function renderLineChart(container, chartData) {
           ? `<text
               x="${point.x}"
               y="${height - 28}"
-              text-anchor="end"
+              text-anchor="${point.labelAnchor === "start" ? "start" : "end"}"
               transform="rotate(-35 ${point.x} ${height - 28})"
               class="line-chart-label"
             >${point.contest}</text>`
           : `<text
               x="${point.x}"
               y="${height - 36}"
-              text-anchor="middle"
+              text-anchor="${point.labelAnchor}"
               class="line-chart-label"
             >${point.contest}</text>`
         : "";
@@ -209,29 +211,18 @@ async function renderHome() {
   const contests = sortContestsLatestFirst(rows.map((r) => r.contest));
   const names = uniqueSorted(rows.map((r) => r.name));
 
-  const contestSearch = document.querySelector("#contestSearch");
-  const personSearch = document.querySelector("#personSearch");
-  const contestList = document.querySelector("#contestList");
-  const personList = document.querySelector("#personList");
-
-  const draw = () => {
-    makeLinkList(
-      contestList,
-      filterContains(contests, contestSearch.value),
-      "contest",
-      "contest.html",
-    );
-    makeLinkList(
-      personList,
-      filterContains(names, personSearch.value),
-      "name",
-      "person.html",
-    );
-  };
-
-  contestSearch.addEventListener("input", draw);
-  personSearch.addEventListener("input", draw);
-  draw();
+  makeLinkList(
+    document.querySelector("#contestList"),
+    contests,
+    "contest",
+    "contest.html",
+  );
+  makeLinkList(
+    document.querySelector("#personList"),
+    names,
+    "name",
+    "person.html",
+  );
 }
 
 async function renderContest() {
@@ -240,7 +231,6 @@ async function renderContest() {
   const browse = document.querySelector("#contestBrowse");
   const detail = document.querySelector("#contestDetail");
   const list = document.querySelector("#contestList");
-  const search = document.querySelector("#contestSearch");
   const select = document.querySelector("#contestSelect");
   const body = document.querySelector("#contestTableBody");
   const title = document.querySelector("#contestTitle");
@@ -252,16 +242,7 @@ async function renderContest() {
   if (!selectedContest) {
     browse.hidden = false;
     detail.hidden = true;
-    const drawList = () => {
-      makeLinkList(
-        list,
-        filterContains(contests, search.value),
-        "contest",
-        "contest.html",
-      );
-    };
-    search.addEventListener("input", drawList);
-    drawList();
+    makeLinkList(list, contests, "contest", "contest.html");
     return;
   }
 
@@ -322,7 +303,6 @@ async function renderPerson() {
   const browse = document.querySelector("#personBrowse");
   const detail = document.querySelector("#personDetail");
   const list = document.querySelector("#personList");
-  const search = document.querySelector("#personSearch");
   const select = document.querySelector("#personSelect");
   const body = document.querySelector("#personTableBody");
   const title = document.querySelector("#personTitle");
@@ -333,16 +313,7 @@ async function renderPerson() {
   if (!selectedName) {
     browse.hidden = false;
     detail.hidden = true;
-    const drawList = () => {
-      makeLinkList(
-        list,
-        filterContains(names, search.value),
-        "name",
-        "person.html",
-      );
-    };
-    search.addEventListener("input", drawList);
-    drawList();
+    makeLinkList(list, names, "name", "person.html");
     return;
   }
 
@@ -373,7 +344,7 @@ async function renderPerson() {
 
     const chartData = Array.from(contestTotals.entries())
       .map(([contest, total]) => ({ contest, total }))
-      .sort((a, b) => parseContestValue(b.contest) - parseContestValue(a.contest));
+      .sort((a, b) => parseContestValue(a.contest) - parseContestValue(b.contest));
     renderLineChart(chart, chartData);
 
     body.innerHTML = "";

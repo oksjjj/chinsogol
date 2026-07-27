@@ -149,7 +149,6 @@ h2 {
   color: #153126;
 }
 
-.search,
 select {
   width: 100%;
   margin-top: 10px;
@@ -160,7 +159,6 @@ select {
   background: #fff;
 }
 
-.search:focus,
 select:focus {
   outline: none;
   border-color: #2d6a4f;
