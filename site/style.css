@@ -9,7 +9,8 @@ body {
   background:
     radial-gradient(circle at 10% 10%, #1f5138 0, transparent 28%),
     radial-gradient(circle at 90% 0%, #8f7c3e 0, transparent 24%),
-    linear-gradient(180deg, #0d1f18 0%, #142b22 26%, #eff3f1 26%, #eff3f1 100%);
+    linear-gradient(180deg, #0d1f18 0%, #142b22 240px, #eff3f1 240px, #eff3f1 100%);
+  background-attachment: fixed;
   color: #15231c;
 }
 
@@ -40,10 +41,6 @@ body {
   margin-bottom: 20px;
   color: #f9faf9;
   min-height: 92px;
-}
-
-.site-header.compact {
-  margin-bottom: 16px;
 }
 
 .site-header > div:last-child {
@@ -80,10 +77,6 @@ h1 {
   color: rgba(246, 248, 247, 0.9);
   line-height: 1.45;
   min-height: 1.45em;
-}
-
-.site-header.compact .subtitle {
-  margin-bottom: 0;
 }
 
 .top-tabs {
@@ -163,7 +156,7 @@ select {
   padding: 11px 12px;
   border: 1px solid #d6ddd9;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 16px;
   background: #fff;
 }
 
