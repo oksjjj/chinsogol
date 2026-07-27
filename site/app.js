@@ -104,10 +104,11 @@ function renderLineChart(container, chartData) {
   }
 
   const count = chartData.length;
-  const pointGap = count >= 20 ? 72 : count >= 12 ? 64 : 56;
-  const width = Math.max(720, (count - 1) * pointGap + 120);
-  const height = 320;
-  const padding = { top: 40, right: 36, bottom: 92, left: 36 };
+  const needsScroll = count > 8;
+  const pointGap = count >= 20 ? 64 : 56;
+  const width = needsScroll ? Math.max(720, (count - 1) * pointGap + 100) : 720;
+  const height = 360;
+  const padding = { top: 40, right: 32, bottom: 118, left: 32 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = chartData.map((item) => item.total);
@@ -140,13 +141,20 @@ function renderLineChart(container, chartData) {
   const labels = points
     .map((point) => {
       const axisLabel = point.showLabel
-        ? `<text
-            x="${point.x}"
-            y="${height - 18}"
-            text-anchor="end"
-            transform="rotate(-40 ${point.x} ${height - 18})"
-            class="line-chart-label"
-          >${point.contest}</text>`
+        ? needsScroll
+          ? `<text
+              x="${point.x}"
+              y="${height - 28}"
+              text-anchor="end"
+              transform="rotate(-35 ${point.x} ${height - 28})"
+              class="line-chart-label"
+            >${point.contest}</text>`
+          : `<text
+              x="${point.x}"
+              y="${height - 36}"
+              text-anchor="middle"
+              class="line-chart-label"
+            >${point.contest}</text>`
         : "";
 
       return `
@@ -173,12 +181,16 @@ function renderLineChart(container, chartData) {
     )
     .join("");
 
+  const svgSizeAttrs = needsScroll
+    ? `width="${width}"`
+    : `width="100%" preserveAspectRatio="xMidYMid meet"`;
+
   container.innerHTML = `
     <div class="line-chart-card">
-      <div class="line-chart-scroll">
+      <div class="line-chart-scroll${needsScroll ? " is-scrollable" : ""}">
         <svg
           viewBox="0 0 ${width} ${height}"
-          width="${width}"
+          ${svgSizeAttrs}
           class="line-chart"
           role="img"
           aria-label="대회별 스트로크 추이 그래프"
