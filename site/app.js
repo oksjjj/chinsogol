@@ -58,12 +58,28 @@ function uniqueSorted(list) {
   return Array.from(new Set(list)).sort((a, b) => a.localeCompare(b, "ko"));
 }
 
-function parseContestValue(contest) {
+function parseContestParts(contest) {
   const match = contest.match(/(\d+)년\s*(\d+)월/);
-  if (!match) return Number.NEGATIVE_INFINITY;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  return year * 100 + month;
+  if (!match) return null;
+  return {
+    year: Number(match[1]),
+    month: Number(match[2]),
+  };
+}
+
+function parseContestValue(contest) {
+  const parts = parseContestParts(contest);
+  if (!parts) return Number.NEGATIVE_INFINITY;
+  return parts.year * 100 + parts.month;
+}
+
+function formatContestAxisLabel(contest, previousContest) {
+  const parts = parseContestParts(contest);
+  if (!parts) return contest;
+
+  const previous = previousContest ? parseContestParts(previousContest) : null;
+  const yearChanged = !previous || previous.year !== parts.year;
+  return yearChanged ? `${parts.year}년${parts.month}월` : `${parts.month}월`;
 }
 
 function sortContestsLatestFirst(list) {
@@ -100,15 +116,19 @@ function renderLineChart(container, chartData) {
   const count = chartData.length;
   const needsScroll = count > 8;
   const isMobile = window.matchMedia("(max-width: 700px)").matches;
+  const axisLabels = chartData.map((item, index) =>
+    formatContestAxisLabel(
+      item.contest,
+      index > 0 ? chartData[index - 1].contest : null,
+    ),
+  );
   const pointGap = count >= 20 ? 64 : 56;
   const width = needsScroll ? Math.max(720, (count - 1) * pointGap + 140) : 720;
-  const labelBudget = isMobile ? 96 : 56;
+  const labelBudget = isMobile ? 42 : 56;
   const provisionalPlotWidth = width - 80;
   const needsTilt =
     count > 1 &&
-    (needsScroll ||
-      (isMobile && count >= 3) ||
-      count * labelBudget > provisionalPlotWidth);
+    (needsScroll || count * labelBudget > provisionalPlotWidth);
   const valueOffset = isMobile ? 28 : 14;
   const height = needsTilt ? (isMobile ? 500 : 400) : isMobile ? 380 : 360;
   const padding = needsTilt
@@ -120,15 +140,15 @@ function renderLineChart(container, chartData) {
       }
     : {
         top: isMobile ? 56 : 40,
-        right: 64,
-        bottom: 118,
-        left: 64,
+        right: isMobile ? 36 : 64,
+        bottom: isMobile ? 72 : 118,
+        left: isMobile ? 36 : 64,
       };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const labelY = needsTilt
     ? padding.top + plotHeight + (isMobile ? 44 : 32)
-    : height - 36;
+    : height - (isMobile ? 28 : 36);
   const values = chartData.map((item) => item.total);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
@@ -147,7 +167,13 @@ function renderLineChart(container, chartData) {
       index === 0 ||
       index === count - 1 ||
       index % labelStep === 0;
-    return { ...item, x, y, showLabel };
+    return {
+      ...item,
+      x,
+      y,
+      showLabel,
+      axisLabel: axisLabels[index],
+    };
   });
 
   const polylinePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
@@ -167,13 +193,13 @@ function renderLineChart(container, chartData) {
               text-anchor="end"
               transform="rotate(-40 ${point.x} ${labelY})"
               class="line-chart-label"
-            >${point.contest}</text>`
+            >${point.axisLabel}</text>`
           : `<text
               x="${point.x}"
               y="${labelY}"
               text-anchor="middle"
               class="line-chart-label"
-            >${point.contest}</text>`;
+            >${point.axisLabel}</text>`;
 
       return `
         <g class="chart-point-group">
