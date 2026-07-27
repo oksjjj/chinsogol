@@ -1,9 +1,21 @@
 let cache = null;
 
+function getBuildVersion() {
+  return document
+    .querySelector('meta[name="build-version"]')
+    ?.getAttribute("content")
+    ?.trim() || "dev";
+}
+
+function withBuildVersion(path) {
+  const version = encodeURIComponent(getBuildVersion());
+  return `${path}?v=${version}`;
+}
+
 async function loadRows() {
   if (cache) return cache;
 
-  const candidates = ["score.txt", "../score.txt"];
+  const candidates = [withBuildVersion("score.txt"), withBuildVersion("../score.txt")];
   let text = "";
   let ok = false;
 

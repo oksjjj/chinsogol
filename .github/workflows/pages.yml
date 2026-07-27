@@ -25,6 +25,8 @@ jobs:
         run: |
           cp score.txt site/score.txt
           cp "친쏘골 엠블렘.png" "site/친쏘골 엠블렘.png"
+          VERSION="${GITHUB_SHA::7}"
+          perl -0pi -e "s/__BUILD_VERSION__/${VERSION}/g" site/*.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

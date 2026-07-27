@@ -3,8 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="build-version" content="__BUILD_VERSION__" />
     <title>개인별 스코어 조회</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=__BUILD_VERSION__" />
   </head>
   <body data-page="person">
     <main class="container">
@@ -12,7 +16,7 @@
         <div class="brand-mark">
           <img
             class="brand-emblem"
-            src="친쏘골 엠블렘.png"
+            src="친쏘골 엠블렘.png?v=__BUILD_VERSION__"
             alt="친쏘골 엠블렘"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
           />
@@ -66,6 +70,6 @@
       </footer>
     </main>
 
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=__BUILD_VERSION__"></script>
   </body>
   </html>
