@@ -134,15 +134,15 @@ function renderLineChart(container, chartData) {
   const padding = needsTilt
     ? {
         top: isMobile ? 56 : 40,
-        right: isMobile ? 56 : 48,
+        right: isMobile ? 64 : 56,
         bottom: isMobile ? 150 : 110,
-        left: isMobile ? 100 : 84,
+        left: isMobile ? 110 : 92,
       }
     : {
         top: isMobile ? 56 : 40,
-        right: isMobile ? 36 : 64,
+        right: isMobile ? 56 : 72,
         bottom: isMobile ? 72 : 118,
-        left: isMobile ? 36 : 64,
+        left: isMobile ? 56 : 72,
       };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
