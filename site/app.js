@@ -137,7 +137,6 @@ function renderLineChart(container, chartData) {
             y2="${tick.y}"
             class="line-chart-grid"
           ></line>
-          <text x="${padding.left - 10}" y="${tick.y + 4}" text-anchor="end" class="line-chart-axis">${tick.value}</text>
         </g>`,
     )
     .join("");
