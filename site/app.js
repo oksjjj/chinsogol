@@ -109,9 +109,14 @@ function renderLineChart(container, chartData) {
     (needsScroll ||
       (isMobile && count >= 3) ||
       count * labelBudget > provisionalPlotWidth);
-  const height = needsTilt ? 380 : 360;
+  const height = needsTilt ? (isMobile ? 560 : 430) : 360;
   const padding = needsTilt
-    ? { top: 40, right: 48, bottom: 140, left: 84 }
+    ? {
+        top: 40,
+        right: isMobile ? 56 : 48,
+        bottom: isMobile ? 280 : 180,
+        left: isMobile ? 100 : 84,
+      }
     : { top: 40, right: 64, bottom: 118, left: 64 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
@@ -149,9 +154,9 @@ function renderLineChart(container, chartData) {
         : needsTilt
           ? `<text
               x="${point.x}"
-              y="${height - 24}"
+              y="${height - (isMobile ? 96 : 48)}"
               text-anchor="end"
-              transform="rotate(-40 ${point.x} ${height - 24})"
+              transform="rotate(-40 ${point.x} ${height - (isMobile ? 96 : 48)})"
               class="line-chart-label"
             >${point.contest}</text>`
           : `<text
@@ -190,7 +195,7 @@ function renderLineChart(container, chartData) {
     : `width="100%" preserveAspectRatio="xMidYMid meet"`;
 
   container.innerHTML = `
-    <div class="line-chart-card">
+    <div class="line-chart-card${needsTilt ? " has-tilted-labels" : ""}">
       <div class="line-chart-scroll${needsScroll ? " is-scrollable" : ""}">
         <svg
           viewBox="0 0 ${width} ${height}"

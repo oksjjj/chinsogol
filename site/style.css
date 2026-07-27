@@ -246,6 +246,24 @@ table {
   white-space: nowrap;
 }
 
+.person-score-table th:nth-child(1),
+.person-score-table td:nth-child(1) {
+  width: 25%;
+  white-space: nowrap;
+}
+
+.person-score-table th:nth-child(2),
+.person-score-table td:nth-child(2) {
+  width: 60%;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.person-score-table th:nth-child(3),
+.person-score-table td:nth-child(3) {
+  width: 15%;
+}
+
 thead th {
   background: #f2f6f4;
   color: #244437;
@@ -276,11 +294,17 @@ tbody tr:hover {
   border-radius: 14px;
   background: linear-gradient(180deg, #f8fbf9, #f2f6f4);
   border: 1px solid #dfe7e2;
+  overflow: visible;
+}
+
+.line-chart-card.has-tilted-labels {
+  padding-bottom: 28px;
 }
 
 .line-chart-scroll {
   width: 100%;
   overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .line-chart-scroll.is-scrollable {
@@ -292,6 +316,7 @@ tbody tr:hover {
   width: 100%;
   height: auto;
   display: block;
+  overflow: visible;
 }
 
 .line-chart-scroll.is-scrollable .line-chart {
@@ -383,5 +408,9 @@ tbody tr:hover {
   .line-chart-label,
   .line-chart-value {
     font-size: 24px;
+  }
+
+  .line-chart-card.has-tilted-labels {
+    padding-bottom: 48px;
   }
 }
