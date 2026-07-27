@@ -19,6 +19,20 @@ body {
   padding: 28px 16px 48px;
 }
 
+.brand-mark {
+  flex: 0 0 auto;
+}
+
+.brand-emblem {
+  width: 74px;
+  height: 74px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(235, 207, 131, 0.85);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  background: #1e4936;
+}
+
 .site-header {
   display: flex;
   gap: 16px;
@@ -32,8 +46,8 @@ body {
 }
 
 .logo-mark {
-  width: 62px;
-  height: 62px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   border: 2px solid rgba(235, 207, 131, 0.85);
   background: linear-gradient(145deg, #1e4936, #193929);
@@ -59,6 +73,43 @@ h1 {
 
 .site-header.compact .subtitle {
   margin-bottom: 0;
+}
+
+.top-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 0 18px;
+}
+
+.tab-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #eff7f2;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.tab-link:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.tab-link.active {
+  background: #f3e5b4;
+  color: #163427;
+  border-color: rgba(243, 229, 180, 0.95);
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .panel {
@@ -142,49 +193,49 @@ tbody tr:hover {
   background: #f8fbf9;
 }
 
-.back-link {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: #c5dfd3;
-  text-decoration: none;
-  font-weight: 600;
-}
-
 .muted {
   color: #617368;
   font-size: 13px;
 }
 
-.chart-list {
-  display: grid;
-  gap: 10px;
-  margin-top: 12px;
+.line-chart-card {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f8fbf9, #f2f6f4);
+  border: 1px solid #dfe7e2;
 }
 
-.chart-row {
-  display: grid;
-  grid-template-columns: 120px 1fr 48px;
-  gap: 10px;
-  align-items: center;
-}
-
-.chart-label,
-.chart-value {
-  font-size: 13px;
-  color: #234034;
-}
-
-.chart-bar-wrap {
+.line-chart {
   width: 100%;
-  height: 14px;
-  border-radius: 999px;
-  background: #dde5e1;
-  overflow: hidden;
+  height: auto;
+  display: block;
 }
 
-.chart-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #2d6a4f, #5d8b4c);
+.line-chart-grid {
+  stroke: #d8e2dc;
+  stroke-width: 1;
+}
+
+.line-chart-axis,
+.line-chart-label,
+.line-chart-value {
+  fill: #355446;
+  font-size: 12px;
+}
+
+.line-chart-path {
+  fill: none;
+  stroke: #2d6a4f;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-chart-point {
+  fill: #c7a94d;
+  stroke: #1f5138;
+  stroke-width: 2;
 }
 
 .site-footer {
@@ -217,11 +268,23 @@ tbody tr:hover {
     align-items: flex-start;
   }
 
+  .brand-emblem,
+  .logo-mark {
+    width: 62px;
+    height: 62px;
+  }
+
   h1 {
     font-size: 24px;
   }
 
-  .chart-row {
-    grid-template-columns: 90px 1fr 44px;
+  .split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .line-chart-axis,
+  .line-chart-label,
+  .line-chart-value {
+    font-size: 11px;
   }
 }

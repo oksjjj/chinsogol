@@ -21,8 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare score data for site
-        run: cp score.txt site/score.txt
+      - name: Prepare site assets
+        run: |
+          cp score.txt site/score.txt
+          cp "친쏘골 엠블렘.png" "site/친쏘골 엠블렘.png"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

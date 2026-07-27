@@ -68,6 +68,79 @@ function filterContains(values, keyword) {
   return values.filter((value) => value.toLowerCase().includes(q));
 }
 
+function renderLineChart(container, chartData) {
+  container.innerHTML = "";
+
+  if (chartData.length === 0) {
+    container.innerHTML = '<p class="muted">표시할 대회 데이터가 없습니다.</p>';
+    return;
+  }
+
+  const width = 720;
+  const height = 260;
+  const padding = { top: 20, right: 24, bottom: 56, left: 48 };
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const values = chartData.map((item) => item.total);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = Math.max(maxValue - minValue, 1);
+
+  const points = chartData.map((item, index) => {
+    const x =
+      chartData.length === 1
+        ? padding.left + plotWidth / 2
+        : padding.left + (plotWidth * index) / (chartData.length - 1);
+    const normalized = (item.total - minValue) / range;
+    const y = padding.top + plotHeight - normalized * plotHeight;
+    return { ...item, x, y };
+  });
+
+  const polylinePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const ticks = [0, 0.5, 1].map((ratio) => {
+    const value = Math.round(maxValue - ratio * range);
+    const y = padding.top + plotHeight * ratio;
+    return { value, y };
+  });
+
+  const labels = points
+    .map(
+      (point) => `
+        <g class="chart-point-group">
+          <circle cx="${point.x}" cy="${point.y}" r="5" class="line-chart-point"></circle>
+          <text x="${point.x}" y="${point.y - 12}" text-anchor="middle" class="line-chart-value">${point.total}</text>
+          <text x="${point.x}" y="${height - 20}" text-anchor="middle" class="line-chart-label">${point.contest}</text>
+        </g>`,
+    )
+    .join("");
+
+  const grid = ticks
+    .map(
+      (tick) => `
+        <g>
+          <line
+            x1="${padding.left}"
+            y1="${tick.y}"
+            x2="${width - padding.right}"
+            y2="${tick.y}"
+            class="line-chart-grid"
+          ></line>
+          <text x="${padding.left - 10}" y="${tick.y + 4}" text-anchor="end" class="line-chart-axis">${tick.value}</text>
+        </g>`,
+    )
+    .join("");
+
+  container.innerHTML = `
+    <div class="line-chart-card">
+      <svg viewBox="0 0 ${width} ${height}" class="line-chart" role="img" aria-label="대회별 스트로크 추이 그래프">
+        ${grid}
+        <polyline points="${polylinePoints}" class="line-chart-path"></polyline>
+        ${labels}
+      </svg>
+    </div>
+  `;
+}
+
 async function renderHome() {
   const rows = await loadRows();
   const contests = uniqueSorted(rows.map((r) => r.contest));
@@ -197,23 +270,7 @@ async function renderPerson() {
     const chartData = Array.from(contestTotals.entries())
       .map(([contest, total]) => ({ contest, total }))
       .sort((a, b) => a.contest.localeCompare(b.contest, "ko"));
-    const maxValue = Math.max(...chartData.map((d) => d.total), 1);
-
-    chart.innerHTML = "";
-    const list = document.createElement("div");
-    list.className = "chart-list";
-    for (const item of chartData) {
-      const row = document.createElement("div");
-      row.className = "chart-row";
-      const width = Math.max((item.total / maxValue) * 100, 2);
-      row.innerHTML = `
-        <span class="chart-label">${item.contest}</span>
-        <div class="chart-bar-wrap"><div class="chart-bar" style="width:${width}%"></div></div>
-        <span class="chart-value">${item.total}</span>
-      `;
-      list.appendChild(row);
-    }
-    chart.appendChild(list);
+    renderLineChart(chart, chartData);
 
     body.innerHTML = "";
     for (const item of target) {

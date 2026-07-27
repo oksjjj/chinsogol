@@ -9,23 +9,39 @@
   <body data-page="home">
     <main class="container">
       <header class="site-header">
-        <div class="logo-mark" aria-hidden="true">친쏘골</div>
+        <div class="brand-mark">
+          <img
+            class="brand-emblem"
+            src="친쏘골 엠블렘.png"
+            alt="친쏘골 엠블렘"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          />
+          <div class="logo-mark" aria-hidden="true" style="display: none;">친쏘골</div>
+        </div>
         <div>
           <h1>친쏘골 스코어 보드</h1>
           <p class="subtitle">대회별/개인별 스코어를 한눈에 확인하세요.</p>
         </div>
       </header>
 
-      <section class="panel">
-        <h2>대회별 조회</h2>
-        <input id="contestSearch" class="search" placeholder="대회명 검색 (예: 26년7월)" />
-        <ul id="contestList" class="link-list"></ul>
-      </section>
+      <nav class="top-tabs" aria-label="페이지 이동">
+        <a class="tab-link active" href="index.html">홈</a>
+        <a class="tab-link" href="contest.html">대회별</a>
+        <a class="tab-link" href="person.html">개인별</a>
+      </nav>
 
-      <section class="panel">
-        <h2>개인별 조회</h2>
-        <input id="personSearch" class="search" placeholder="이름 검색 (예: 김성진)" />
-        <ul id="personList" class="link-list"></ul>
+      <section class="split-layout">
+        <section class="panel">
+          <h2>대회별 조회</h2>
+          <input id="contestSearch" class="search" placeholder="대회명 검색 (예: 26년7월)" />
+          <ul id="contestList" class="link-list"></ul>
+        </section>
+
+        <section class="panel">
+          <h2>개인별 조회</h2>
+          <input id="personSearch" class="search" placeholder="이름 검색 (예: 김성진)" />
+          <ul id="personList" class="link-list"></ul>
+        </section>
       </section>
 
       <footer class="site-footer">

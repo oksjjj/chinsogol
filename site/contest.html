@@ -8,14 +8,27 @@
   </head>
   <body data-page="contest">
     <main class="container">
-      <a class="back-link" href="index.html">← 홈으로</a>
       <header class="site-header compact">
-        <div class="logo-mark" aria-hidden="true">친쏘골</div>
+        <div class="brand-mark">
+          <img
+            class="brand-emblem"
+            src="친쏘골 엠블렘.png"
+            alt="친쏘골 엠블렘"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          />
+          <div class="logo-mark" aria-hidden="true" style="display: none;">친쏘골</div>
+        </div>
         <div>
           <h1>대회별 스코어 조회</h1>
           <p class="subtitle">참가자 순위와 대회 결과를 확인하세요.</p>
         </div>
       </header>
+
+      <nav class="top-tabs" aria-label="페이지 이동">
+        <a class="tab-link" href="index.html">홈</a>
+        <a class="tab-link active" href="contest.html">대회별</a>
+        <a class="tab-link" href="person.html">개인별</a>
+      </nav>
 
       <section class="panel">
         <label for="contestSelect">대회 선택</label>
