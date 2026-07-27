@@ -99,10 +99,20 @@ function renderLineChart(container, chartData) {
 
   const count = chartData.length;
   const needsScroll = count > 8;
+  const isMobile = window.matchMedia("(max-width: 700px)").matches;
   const pointGap = count >= 20 ? 64 : 56;
-  const width = needsScroll ? Math.max(720, (count - 1) * pointGap + 100) : 720;
-  const height = 360;
-  const padding = { top: 40, right: 64, bottom: 118, left: 64 };
+  const width = needsScroll ? Math.max(720, (count - 1) * pointGap + 140) : 720;
+  const labelBudget = isMobile ? 96 : 56;
+  const provisionalPlotWidth = width - 80;
+  const needsTilt =
+    count > 1 &&
+    (needsScroll ||
+      (isMobile && count >= 3) ||
+      count * labelBudget > provisionalPlotWidth);
+  const height = needsTilt ? 380 : 360;
+  const padding = needsTilt
+    ? { top: 40, right: 48, bottom: 140, left: 84 }
+    : { top: 40, right: 64, bottom: 118, left: 64 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = chartData.map((item) => item.total);
@@ -123,15 +133,7 @@ function renderLineChart(container, chartData) {
       index === 0 ||
       index === count - 1 ||
       index % labelStep === 0;
-    const labelAnchor =
-      count === 1
-        ? "middle"
-        : index === 0
-          ? "start"
-          : index === count - 1
-            ? "end"
-            : "middle";
-    return { ...item, x, y, showLabel, labelAnchor };
+    return { ...item, x, y, showLabel };
   });
 
   const polylinePoints = points.map((point) => `${point.x},${point.y}`).join(" ");
@@ -142,22 +144,22 @@ function renderLineChart(container, chartData) {
 
   const labels = points
     .map((point) => {
-      const axisLabel = point.showLabel
-        ? needsScroll
+      const axisLabel = !point.showLabel
+        ? ""
+        : needsTilt
           ? `<text
               x="${point.x}"
-              y="${height - 28}"
-              text-anchor="${point.labelAnchor === "start" ? "start" : "end"}"
-              transform="rotate(-35 ${point.x} ${height - 28})"
+              y="${height - 24}"
+              text-anchor="end"
+              transform="rotate(-40 ${point.x} ${height - 24})"
               class="line-chart-label"
             >${point.contest}</text>`
           : `<text
               x="${point.x}"
               y="${height - 36}"
-              text-anchor="${point.labelAnchor}"
+              text-anchor="middle"
               class="line-chart-label"
-            >${point.contest}</text>`
-        : "";
+            >${point.contest}</text>`;
 
       return `
         <g class="chart-point-group">
