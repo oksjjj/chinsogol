@@ -109,17 +109,20 @@ function renderLineChart(container, chartData) {
     (needsScroll ||
       (isMobile && count >= 3) ||
       count * labelBudget > provisionalPlotWidth);
-  const height = needsTilt ? (isMobile ? 560 : 430) : 360;
+  const height = needsTilt ? (isMobile ? 480 : 400) : 360;
   const padding = needsTilt
     ? {
         top: 40,
         right: isMobile ? 56 : 48,
-        bottom: isMobile ? 280 : 180,
+        bottom: isMobile ? 150 : 110,
         left: isMobile ? 100 : 84,
       }
     : { top: 40, right: 64, bottom: 118, left: 64 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
+  const labelY = needsTilt
+    ? padding.top + plotHeight + (isMobile ? 44 : 32)
+    : height - 36;
   const values = chartData.map((item) => item.total);
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
@@ -154,14 +157,14 @@ function renderLineChart(container, chartData) {
         : needsTilt
           ? `<text
               x="${point.x}"
-              y="${height - (isMobile ? 96 : 48)}"
+              y="${labelY}"
               text-anchor="end"
-              transform="rotate(-40 ${point.x} ${height - (isMobile ? 96 : 48)})"
+              transform="rotate(-40 ${point.x} ${labelY})"
               class="line-chart-label"
             >${point.contest}</text>`
           : `<text
               x="${point.x}"
-              y="${height - 36}"
+              y="${labelY}"
               text-anchor="middle"
               class="line-chart-label"
             >${point.contest}</text>`;
