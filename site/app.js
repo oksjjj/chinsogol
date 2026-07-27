@@ -109,15 +109,21 @@ function renderLineChart(container, chartData) {
     (needsScroll ||
       (isMobile && count >= 3) ||
       count * labelBudget > provisionalPlotWidth);
-  const height = needsTilt ? (isMobile ? 480 : 400) : 360;
+  const valueOffset = isMobile ? 28 : 14;
+  const height = needsTilt ? (isMobile ? 500 : 400) : isMobile ? 380 : 360;
   const padding = needsTilt
     ? {
-        top: 40,
+        top: isMobile ? 56 : 40,
         right: isMobile ? 56 : 48,
         bottom: isMobile ? 150 : 110,
         left: isMobile ? 100 : 84,
       }
-    : { top: 40, right: 64, bottom: 118, left: 64 };
+    : {
+        top: isMobile ? 56 : 40,
+        right: 64,
+        bottom: 118,
+        left: 64,
+      };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const labelY = needsTilt
@@ -172,7 +178,7 @@ function renderLineChart(container, chartData) {
       return `
         <g class="chart-point-group">
           <circle cx="${point.x}" cy="${point.y}" r="6" class="line-chart-point"></circle>
-          <text x="${point.x}" y="${point.y - 14}" text-anchor="middle" class="line-chart-value">${point.total}</text>
+          <text x="${point.x}" y="${point.y - valueOffset}" text-anchor="middle" class="line-chart-value">${point.total}</text>
           ${axisLabel}
         </g>`;
     })
