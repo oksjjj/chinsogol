@@ -143,6 +143,27 @@ h1 {
   backdrop-filter: blur(4px);
 }
 
+.panel-note {
+  margin: 8px 0 0;
+}
+
+.home-rank-table th:nth-child(1),
+.home-rank-table td:nth-child(1) {
+  width: 15%;
+}
+
+.home-rank-table th:nth-child(2),
+.home-rank-table td:nth-child(2) {
+  width: 40%;
+}
+
+.home-rank-table th:nth-child(3),
+.home-rank-table td:nth-child(3),
+.home-rank-table th:nth-child(4),
+.home-rank-table td:nth-child(4) {
+  width: 22.5%;
+}
+
 h2 {
   margin: 0;
   font-size: 20px;

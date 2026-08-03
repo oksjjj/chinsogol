@@ -250,21 +250,42 @@ function renderLineChart(container, chartData) {
 
 async function renderHome() {
   const rows = await loadRows();
-  const contests = sortContestsLatestFirst(rows.map((r) => r.contest));
-  const names = uniqueSorted(rows.map((r) => r.name));
+  const body = document.querySelector("#homeRankBody");
+  const byName = new Map();
 
-  makeLinkList(
-    document.querySelector("#contestList"),
-    contests,
-    "contest",
-    "contest.html",
-  );
-  makeLinkList(
-    document.querySelector("#personList"),
-    names,
-    "name",
-    "person.html",
-  );
+  for (const row of rows) {
+    if (!byName.has(row.name)) {
+      byName.set(row.name, { total: 0, count: 0, contests: new Set() });
+    }
+    const entry = byName.get(row.name);
+    entry.total += row.stroke;
+    entry.count += 1;
+    entry.contests.add(row.contest);
+  }
+
+  const ranked = Array.from(byName.entries())
+    .map(([name, entry]) => ({
+      name,
+      average: entry.total / entry.count,
+      rounds: entry.count,
+      contests: entry.contests.size,
+    }))
+    .sort((a, b) => a.average - b.average || a.name.localeCompare(b.name, "ko"));
+
+  body.innerHTML = "";
+  ranked.forEach((item, index) => {
+    const averageText = Number.isInteger(item.average)
+      ? String(item.average)
+      : item.average.toFixed(1);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td><a href="person.html?name=${encodeURIComponent(item.name)}">${item.name}</a></td>
+      <td class="score-col">${averageText}</td>
+      <td class="score-col">${item.contests}</td>
+    `;
+    body.appendChild(tr);
+  });
 }
 
 async function renderContest() {

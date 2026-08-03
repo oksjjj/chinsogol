@@ -24,7 +24,7 @@
         </div>
         <div>
           <h1>친쏘골 스코어 보드</h1>
-          <p class="subtitle">대회별/개인별 스코어를 한눈에 확인하세요.</p>
+          <p class="subtitle">전체 평균 스코어로 개인 순위를 확인하세요.</p>
         </div>
       </header>
 
@@ -34,16 +34,20 @@
         <a class="tab-link" href="person.html">개인별</a>
       </nav>
 
-      <section class="split-layout">
-        <section class="panel list-panel">
-          <h2>대회별 조회</h2>
-          <ul id="contestList" class="link-list"></ul>
-        </section>
-
-        <section class="panel list-panel">
-          <h2>개인별 조회</h2>
-          <ul id="personList" class="link-list"></ul>
-        </section>
+      <section class="panel">
+        <h2>전체 평균 순위</h2>
+        <p class="panel-note muted">전체 대회 평균 스코어 기준입니다.</p>
+        <table class="score-table home-rank-table">
+          <thead>
+            <tr>
+              <th>순위</th>
+              <th>이름</th>
+              <th class="score-col">평균 스코어</th>
+              <th class="score-col">참가</th>
+            </tr>
+          </thead>
+          <tbody id="homeRankBody"></tbody>
+        </table>
       </section>
 
       <footer class="site-footer">
