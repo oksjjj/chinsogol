@@ -26,6 +26,7 @@ jobs:
           cp score.txt site/score.txt
           cp "친쏘골 엠블렘.png" "site/친쏘골 엠블렘.png"
           VERSION="${GITHUB_SHA::7}"
+          printf '%s\n' "$VERSION" > site/version.txt
           perl -0pi -e "s/__BUILD_VERSION__/${VERSION}/g" site/*.html
 
       - name: Setup Pages

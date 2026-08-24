@@ -12,6 +12,43 @@ function withBuildVersion(path) {
   return `${path}?v=${version}`;
 }
 
+async function fetchDeployedVersion() {
+  const res = await fetch(`version.txt?t=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  const text = (await res.text()).trim();
+  return text || null;
+}
+
+function watchForNewDeployment() {
+  const currentVersion = getBuildVersion();
+  if (!currentVersion || currentVersion === "dev" || currentVersion === "__BUILD_VERSION__") {
+    return;
+  }
+
+  let checking = false;
+
+  const check = async () => {
+    if (checking || document.hidden) return;
+    checking = true;
+    try {
+      const remoteVersion = await fetchDeployedVersion();
+      if (remoteVersion && remoteVersion !== currentVersion) {
+        window.location.reload();
+      }
+    } catch (_error) {
+      // Ignore transient network errors while polling.
+    } finally {
+      checking = false;
+    }
+  };
+
+  window.setInterval(check, 30000);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) check();
+  });
+  window.addEventListener("focus", check);
+}
+
 async function loadRows() {
   if (cache) return cache;
 
@@ -431,6 +468,7 @@ async function renderPerson() {
 }
 
 async function bootstrap() {
+  watchForNewDeployment();
   const page = document.body.dataset.page;
   if (page === "home") return renderHome();
   if (page === "contest") return renderContest();
